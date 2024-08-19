@@ -11,6 +11,11 @@ struct SectionModel: Identifiable, Equatable {
     var id: UUID = .init()
     var section: Section
     
+    init(id: UUID, section: Section) {
+        self.id = id
+        self.section = section
+    }
+    
     init(section: Section) {
         self.section = section
     }

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct VarType {
+struct VarType: Identifiable {
+    var id: UUID = .init()
     var name: String
     var isOptional: Bool
 }

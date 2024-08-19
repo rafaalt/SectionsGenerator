@@ -14,7 +14,7 @@ struct ButtonView: View {
             Text(model.text)
                 .foregroundStyle(model.getType() == .primary ? .white : .orange)
         }
-        .frame(height: 80)
+        .frame(height: 40)
         .frame(maxWidth: .infinity)
         .background(model.getType() == .primary ? .orange : .white)
         .border(model.getType() == .primary ? .clear : .orange, width: 3)

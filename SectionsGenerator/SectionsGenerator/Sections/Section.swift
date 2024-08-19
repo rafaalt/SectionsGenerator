@@ -32,4 +32,28 @@ class Section {
         }
         return types
     }
+    
+    func getModelByProperties(properties: [String : String]) -> Section? {
+        return nil
+    }
+    
+    func getStringValue(value: String, properties: [String : String]) -> String? {
+        if let result = properties[value] {
+            return result
+        }
+        return nil
+    }
+    
+    func getBoolValue(value: String, properties: [String : String]) -> Bool? {
+        guard let string = getStringValue(value: value, properties: properties)
+        else { return nil }
+        switch string.lowercased() {
+        case "false":
+            return false
+        case "true":
+            return true
+        default:
+            return nil
+        }
+    }
 }

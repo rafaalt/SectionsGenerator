@@ -13,12 +13,17 @@ struct HomeView: View {
     
     @State private var allSections: [SectionModel] = [
         .init(section: .init(sectionType: "SECTION")),
-        .init(section: ButtonModel(text: "Text", type: .secondary))
+        .init(section: ButtonModel(text: "Text", type: .primary)),
+        .init(section: CardModel(icon: "heart", text: "Texto", type: .blue))
     ]
     
     @State private var currentlyDragging: SectionModel?
     @State private var isFromPreview: Bool?
-
+    @State private var showingConfig: Bool = false
+    @State private var types: [VarType] = []
+    @State private var configBindings: [String: String] = [:]
+    @State private var actualSectionConfig: SectionModel?
+    
     var body: some View {
         HStack {
             Spacer()
@@ -71,7 +76,7 @@ struct HomeView: View {
                     SectionView(model: section)
                         .padding(.horizontal, 24)
                         .onTapGesture {
-                            print(section.section.listProperties())
+                            tapSection(section)
                         }
                         .onDrag {
                             self.currentlyDragging = section
@@ -92,12 +97,14 @@ struct HomeView: View {
     
     var sectionsConfig: some View {
         VStack {
-            Text("Configurações")
-                .bold()
-                .font(.title)
-                .foregroundStyle(.gray)
-            configList
-            Spacer()
+            if showingConfig {
+                Text("Configurações")
+                    .bold()
+                    .font(.title)
+                    .foregroundStyle(.gray)
+                configList
+                Spacer()
+            }
         }
         .padding(.vertical, 40)
         .frame(maxHeight: .infinity)
@@ -111,17 +118,30 @@ struct HomeView: View {
     
     var configList: some View {
         VStack {
-            Text("STANDALONE_BUTTON")
+            Text(actualSectionConfig?.section.sectionType ?? "")
                 .font(.title2)
                 .foregroundStyle(.black)
-            TextField("Enter your name", text: $name)
-                .background(.red)
-                .padding()
-                .clipShape(.rect(cornerRadius: 8))
+            ForEach(types) { type in
+                MyTextField(placeholder: type.name,
+                            value: Binding(
+                                get: { configBindings[type.name, default: ""] },
+                                set: { configBindings[type.name] = $0 }
+                            ))
+            }
+            Button {
+                saveConfig()
+            } label: {
+                Text("Salvar")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .font(.title)
+                    .background(.blue)
+                    .foregroundStyle(.white)
+                    .clipShape(.rect(cornerRadius: 8))
+            }
+
         }
-        .padding(12)
-        .background(Color("lightGray"))
-        .clipShape(.rect(cornerRadius: 8))
+        .padding(.horizontal, 16)
     }
     
     func emptyDropArea(currentItemArray: Binding<[SectionModel]>, otherItemArray: Binding<[SectionModel]>) -> some View {
@@ -130,5 +150,33 @@ struct HomeView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(Text("Drop items here").foregroundColor(.gray))
             .onDrop(of: ["public.text"], delegate: EmptySectionDropDelegate(currentItemArray: currentItemArray, otherItemArray: otherItemArray, draggedItem: $currentlyDragging))
+    }
+    
+    //MARK: - PRIVATE METHODS
+
+    private func tapSection(_ section: SectionModel) {
+        self.configBindings = [:]
+        self.types = section.section.listProperties()
+        if actualSectionConfig == section && showingConfig{
+            showingConfig = false
+        } else {
+            showingConfig = true
+        }
+        self.actualSectionConfig = section
+    }
+    
+    private func saveConfig() {
+        guard let actualSection = actualSectionConfig else { return }
+        guard let newModel = actualSection.section.getModelByProperties(properties: configBindings)
+        else { return }
+        let newSection = SectionModel(section: newModel)
+        replaceSection(id: actualSection.id, in: &allSections, with: newSection)
+        showingConfig = false
+    }
+    
+    private func replaceSection(id: UUID, in sections: inout [SectionModel], with newSection: SectionModel) {
+        if let index = sections.firstIndex(where: { $0.id == id }) {
+            sections[index] = newSection
+        }
     }
 }

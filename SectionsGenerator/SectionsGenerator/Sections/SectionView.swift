@@ -21,6 +21,9 @@ struct SectionView: View {
         case "STANDALONE_BUTTON": 
             guard let model = model.section as? ButtonModel else { return AnyView(defaultView) }
             return AnyView(ButtonView(model: model))
+        case "SECTION_CARD":
+            guard let model = model.section as? CardModel else { return AnyView(defaultView) }
+            return AnyView(CardView(model: model))
         default:
             return AnyView(defaultView)
         }

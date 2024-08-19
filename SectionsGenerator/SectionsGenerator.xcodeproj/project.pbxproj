@@ -14,6 +14,9 @@
 		D718C53E2C700A03007A9D97 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C53D2C700A03007A9D97 /* Section.swift */; };
 		D718C5402C700A6A007A9D97 /* ButtonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C53F2C700A6A007A9D97 /* ButtonModel.swift */; };
 		D718C5432C70182E007A9D97 /* VarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C5422C70182E007A9D97 /* VarType.swift */; };
+		D718C5462C7111B0007A9D97 /* MyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C5452C7111B0007A9D97 /* MyTextField.swift */; };
+		D718C5492C7152D1007A9D97 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C5482C7152D1007A9D97 /* CardView.swift */; };
+		D718C54B2C7152E2007A9D97 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718C54A2C7152E2007A9D97 /* CardModel.swift */; };
 		D7B579E42C5AFBDA000F86C4 /* SectionsGeneratorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B579E32C5AFBDA000F86C4 /* SectionsGeneratorApp.swift */; };
 		D7B579E62C5AFBDA000F86C4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B579E52C5AFBDA000F86C4 /* HomeView.swift */; };
 		D7B579E82C5AFBDD000F86C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7B579E72C5AFBDD000F86C4 /* Assets.xcassets */; };
@@ -30,6 +33,9 @@
 		D718C53D2C700A03007A9D97 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		D718C53F2C700A6A007A9D97 /* ButtonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonModel.swift; sourceTree = "<group>"; };
 		D718C5422C70182E007A9D97 /* VarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarType.swift; sourceTree = "<group>"; };
+		D718C5452C7111B0007A9D97 /* MyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextField.swift; sourceTree = "<group>"; };
+		D718C5482C7152D1007A9D97 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		D718C54A2C7152E2007A9D97 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
 		D7B579E02C5AFBDA000F86C4 /* SectionsGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SectionsGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7B579E32C5AFBDA000F86C4 /* SectionsGeneratorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsGeneratorApp.swift; sourceTree = "<group>"; };
 		D7B579E52C5AFBDA000F86C4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -78,6 +84,23 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		D718C5442C7111A3007A9D97 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D718C5452C7111B0007A9D97 /* MyTextField.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D718C5472C715252007A9D97 /* Separator */ = {
+			isa = PBXGroup;
+			children = (
+				D718C5482C7152D1007A9D97 /* CardView.swift */,
+				D718C54A2C7152E2007A9D97 /* CardModel.swift */,
+			);
+			path = Separator;
+			sourceTree = "<group>";
+		};
 		D7B579D72C5AFBDA000F86C4 = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +120,7 @@
 		D7B579E22C5AFBDA000F86C4 /* SectionsGenerator */ = {
 			isa = PBXGroup;
 			children = (
+				D718C5442C7111A3007A9D97 /* View */,
 				D718C5412C701819007A9D97 /* Model */,
 				D718C5332C6FB79D007A9D97 /* DropDelegate */,
 				D7B579F22C5AFE2C000F86C4 /* Sections */,
@@ -120,6 +144,7 @@
 		D7B579F22C5AFE2C000F86C4 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				D718C5472C715252007A9D97 /* Separator */,
 				D718C53A2C70095F007A9D97 /* Button */,
 				D7B579F32C5AFE3A000F86C4 /* SectionView.swift */,
 				D7B579F52C5B055B000F86C4 /* SectionModel.swift */,
@@ -201,9 +226,12 @@
 				D718C53E2C700A03007A9D97 /* Section.swift in Sources */,
 				D7B579E62C5AFBDA000F86C4 /* HomeView.swift in Sources */,
 				D718C5352C6FB7B1007A9D97 /* EmptySectionDropDelegate.swift in Sources */,
+				D718C54B2C7152E2007A9D97 /* CardModel.swift in Sources */,
+				D718C5462C7111B0007A9D97 /* MyTextField.swift in Sources */,
 				D718C53C2C7009AA007A9D97 /* ButtonView.swift in Sources */,
 				D7B579E42C5AFBDA000F86C4 /* SectionsGeneratorApp.swift in Sources */,
 				D7B579F42C5AFE3A000F86C4 /* SectionView.swift in Sources */,
+				D718C5492C7152D1007A9D97 /* CardView.swift in Sources */,
 				D7B579F62C5B055B000F86C4 /* SectionModel.swift in Sources */,
 				D718C5402C700A6A007A9D97 /* ButtonModel.swift in Sources */,
 				D718C5372C6FB7EE007A9D97 /* SectionDropDelegate.swift in Sources */,

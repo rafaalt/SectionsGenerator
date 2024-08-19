@@ -68,11 +68,20 @@ struct HomeView: View {
     }
     
     var sectionsList: some View {
-        VStack {
+        VStack(spacing: 0) {
             if allSections.isEmpty {
                 emptyDropArea(currentItemArray: $allSections, otherItemArray: $sectionsShowed)
             } else {
                 ForEach(allSections) { section in
+                    HStack {
+                        Text("\(section.section.sectionType):")
+                            .font(.title2)
+                            .foregroundStyle(.black)
+                        Spacer()
+                    }
+                    .padding(.leading, 44)
+                    .padding(.top, 16)
+                    .padding(.bottom, 4)
                     SectionView(model: section)
                         .padding(.horizontal, 24)
                         .onTapGesture {
@@ -122,7 +131,7 @@ struct HomeView: View {
                 .font(.title2)
                 .foregroundStyle(.black)
             ForEach(types) { type in
-                MyTextField(placeholder: type.name,
+                MyTextField(placeholder: getPlaceholderString(type: type),
                             value: Binding(
                                 get: { configBindings[type.name, default: ""] },
                                 set: { configBindings[type.name] = $0 }
@@ -177,6 +186,14 @@ struct HomeView: View {
     private func replaceSection(id: UUID, in sections: inout [SectionModel], with newSection: SectionModel) {
         if let index = sections.firstIndex(where: { $0.id == id }) {
             sections[index] = newSection
+        }
+    }
+    
+    private func getPlaceholderString(type: VarType) -> String {
+        if type.isOptional {
+            return type.name
+        } else {
+            return "\(type.name)(obrigatório)"
         }
     }
 }

@@ -27,14 +27,29 @@ struct HomeView: View {
     var body: some View {
         HStack {
             Spacer()
-            sectionsPreview
-            Spacer()
-            sectionsList
-            Spacer()
+            VStack {
+                Text("Preview")
+                    .bold()
+                    .font(.title)
+                sectionsPreview
+            }
+            Button {
+                getJson()
+            } label: {
+                Text("Obter Json")
+            }
+            .padding(.horizontal, 16)
+
+            VStack {
+                Text("Sections")
+                    .bold()
+                    .font(.title)
+                sectionsList
+            }
             sectionsConfig
-            Spacer()
         }
         .padding()
+        .background(.white)
     }
     
     var sectionsPreview: some View {
@@ -105,28 +120,26 @@ struct HomeView: View {
     }
     
     var sectionsConfig: some View {
-        VStack {
+        VStack{
             if showingConfig {
-                Text("Configurações")
-                    .bold()
-                    .font(.title)
-                    .foregroundStyle(.gray)
                 configList
-                Spacer()
+                    .padding(.horizontal, 24)
+                    .clipShape(.rect(cornerRadius: 16))
             }
         }
-        .padding(.vertical, 40)
-        .frame(maxHeight: .infinity)
         .frame(width: 400)
-        .border(.gray, width: 20)
-        .background(.white)
-        .clipShape(.rect(cornerRadius: 16))
+        .padding(24)
     }
     
     @State private var name: String = ""
     
     var configList: some View {
         VStack {
+            Spacer()
+            Text("Configurações")
+                .bold()
+                .font(.title)
+                .foregroundStyle(.gray)
             Text(actualSectionConfig?.section.sectionType ?? "")
                 .font(.title2)
                 .foregroundStyle(.black)
@@ -148,7 +161,7 @@ struct HomeView: View {
                     .foregroundStyle(.white)
                     .clipShape(.rect(cornerRadius: 8))
             }
-
+            Spacer()
         }
         .padding(.horizontal, 16)
     }
@@ -164,6 +177,7 @@ struct HomeView: View {
     //MARK: - PRIVATE METHODS
 
     private func tapSection(_ section: SectionModel) {
+        print(section.section.toString())
         self.configBindings = [:]
         self.types = section.section.listProperties()
         if actualSectionConfig == section && showingConfig{
@@ -195,5 +209,19 @@ struct HomeView: View {
         } else {
             return "\(type.name)(obrigatório)"
         }
+    }
+    
+    private func getJson() {
+        var string = "{\n\"sections\": [\n"
+        for (index, section) in sectionsShowed.enumerated() {
+            if index == 0 {
+                string += section.section.toString()
+            } else {
+                string += ",\n"
+                string += section.section.toString()
+            }
+        }        
+        string += "\n]\n}"
+        print(string)
     }
 }

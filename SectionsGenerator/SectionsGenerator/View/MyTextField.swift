@@ -18,7 +18,6 @@ struct MyTextField: View {
             .background(Color("lightOrange"))
             .multilineTextAlignment(.center)
             .clipShape(.rect(cornerRadius: 8))
-            .padding(.horizontal, 16)
             .padding(.vertical, 8)
     }
 }

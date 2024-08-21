@@ -33,6 +33,20 @@ class Section {
         return types
     }
     
+    func toString() -> String {
+        var string = "{\n"
+        string += "\t\"sectionType\": \"\(sectionType)\""
+        let mirror = Mirror(reflecting: self)
+        
+        for child in mirror.children {
+            guard let propertyName = child.label else { continue }
+            string += ",\n"
+            string += "\t\"\(propertyName)\": \"\(child.value)\""
+        }
+        string += "\n}"
+        return string
+    }
+    
     func getModelByProperties(properties: [String : String]) -> Section? {
         return nil
     }
@@ -56,4 +70,6 @@ class Section {
             return nil
         }
     }
+    
+    
 }

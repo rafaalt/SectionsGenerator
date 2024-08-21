@@ -17,8 +17,8 @@ struct ButtonView: View {
         .frame(height: 40)
         .frame(maxWidth: .infinity)
         .background(model.getType() == .primary ? .orange : .white)
-        .border(model.getType() == .primary ? .clear : .orange, width: 3)
         .clipShape(.rect(cornerRadius: 8))
+        .border(model.getType() == .primary ? .clear : .orange, width: 3)
         
     }
 }

@@ -23,6 +23,8 @@
 		D7B579EC2C5AFBDD000F86C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7B579EB2C5AFBDD000F86C4 /* Preview Assets.xcassets */; };
 		D7B579F42C5AFE3A000F86C4 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B579F32C5AFE3A000F86C4 /* SectionView.swift */; };
 		D7B579F62C5B055B000F86C4 /* SectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B579F52C5B055B000F86C4 /* SectionModel.swift */; };
+		D7EC80D32C769FCF00D0EBDA /* ScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC80D22C769FCF00D0EBDA /* ScreenView.swift */; };
+		D7EC80D52C76B4AF00D0EBDA /* FullScreenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC80D42C76B4AE00D0EBDA /* FullScreenDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		D7B579EB2C5AFBDD000F86C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D7B579F32C5AFE3A000F86C4 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		D7B579F52C5B055B000F86C4 /* SectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModel.swift; sourceTree = "<group>"; };
+		D7EC80D22C769FCF00D0EBDA /* ScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenView.swift; sourceTree = "<group>"; };
+		D7EC80D42C76B4AE00D0EBDA /* FullScreenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,7 @@
 				D718C5342C6FB7B1007A9D97 /* EmptySectionDropDelegate.swift */,
 				D718C5362C6FB7EE007A9D97 /* SectionDropDelegate.swift */,
 				D718C5382C6FE54B007A9D97 /* RemoveDropDelegate.swift */,
+				D7EC80D42C76B4AE00D0EBDA /* FullScreenDelegate.swift */,
 			);
 			path = DropDelegate;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 				D7B579E72C5AFBDD000F86C4 /* Assets.xcassets */,
 				D7B579E92C5AFBDD000F86C4 /* SectionsGenerator.entitlements */,
 				D7B579EA2C5AFBDD000F86C4 /* Preview Content */,
+				D7EC80D22C769FCF00D0EBDA /* ScreenView.swift */,
 			);
 			path = SectionsGenerator;
 			sourceTree = "<group>";
@@ -224,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D718C53E2C700A03007A9D97 /* Section.swift in Sources */,
+				D7EC80D52C76B4AF00D0EBDA /* FullScreenDelegate.swift in Sources */,
 				D7B579E62C5AFBDA000F86C4 /* HomeView.swift in Sources */,
 				D718C5352C6FB7B1007A9D97 /* EmptySectionDropDelegate.swift in Sources */,
 				D718C54B2C7152E2007A9D97 /* CardModel.swift in Sources */,
@@ -232,6 +239,7 @@
 				D7B579E42C5AFBDA000F86C4 /* SectionsGeneratorApp.swift in Sources */,
 				D7B579F42C5AFE3A000F86C4 /* SectionView.swift in Sources */,
 				D718C5492C7152D1007A9D97 /* CardView.swift in Sources */,
+				D7EC80D32C769FCF00D0EBDA /* ScreenView.swift in Sources */,
 				D7B579F62C5B055B000F86C4 /* SectionModel.swift in Sources */,
 				D718C5402C700A6A007A9D97 /* ButtonModel.swift in Sources */,
 				D718C5372C6FB7EE007A9D97 /* SectionDropDelegate.swift in Sources */,

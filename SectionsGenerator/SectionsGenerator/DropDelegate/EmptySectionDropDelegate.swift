@@ -9,20 +9,18 @@ import Foundation
 import SwiftUI
 
 struct EmptySectionDropDelegate: DropDelegate {
-    @Binding var currentItemArray: [SectionModel]
-    @Binding var otherItemArray: [SectionModel]
-    @Binding var draggedItem: SectionModel?
+    @Binding var currentSectionArray: [SectionModel]
+    @Binding var otherSectionArray: [SectionModel]
+    @Binding var draggedSection: SectionModel?
     
     func performDrop(info: DropInfo) -> Bool {
-        guard let draggedItem = draggedItem else { return false }
+        guard let draggedSection = draggedSection else { return false }
         
         withAnimation(.snappy) {
-            if let sourceIndex = otherItemArray.firstIndex(of: draggedItem) {
-                let duplicatedItem = SectionModel(model: draggedItem)
-                currentItemArray.append(duplicatedItem)
-            }
+            let duplicatedSection = SectionModel(model: draggedSection)
+            currentSectionArray.append(duplicatedSection)
         }
-        
+        self.draggedSection = nil
         return true
     }
 }

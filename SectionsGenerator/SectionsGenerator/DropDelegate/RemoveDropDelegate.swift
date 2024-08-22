@@ -21,6 +21,7 @@ struct RemoveDropDelegate: DropDelegate {
                 }
             }
         }
+        self.draggedSection = nil
         return true
     }
     

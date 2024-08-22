@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @State private var sectionsShowed: [SectionModel] = []
+    @State var string = "iphone"
+    @State private var sectionsShowed: [SectionModel] = [
+    ]
     
     @State private var allSections: [SectionModel] = [
         .init(section: .init(sectionType: "SECTION")),
@@ -24,69 +25,76 @@ struct HomeView: View {
     @State private var configBindings: [String: String] = [:]
     @State private var actualSectionConfig: SectionModel?
     
+    //MARK: - BODY
+    
     var body: some View {
         HStack {
             Spacer()
+            sectionsPreview
             VStack {
-                Text("Preview")
-                    .bold()
-                    .font(.title)
-                sectionsPreview
+                Spacer()
+                trashSpacer(currentlyDragging, isFromPreview)
+                    .padding(.horizontal, 50)
+                Spacer()
+                getJsonButton
+                Spacer()
+                Spacer()
+                Spacer()
             }
-            Button {
-                getJson()
-            } label: {
-                Text("Obter Json")
-            }
-            .padding(.horizontal, 16)
-
-            VStack {
-                Text("Sections")
-                    .bold()
-                    .font(.title)
-                sectionsList
-            }
+            sectionsList
             sectionsConfig
         }
-        .padding()
-        .background(.white)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color("backgroundColor"))
+        .onDrop(of: ["public.text"], delegate: FullScreenDelegate(draggedSection: $currentlyDragging))
     }
     
+    //MARK: - VIEWS
+    
     var sectionsPreview: some View {
-        VStack(spacing: 2) {
+        ZStack {
             if sectionsShowed.isEmpty {
-                emptyDropArea(currentItemArray: $sectionsShowed, otherItemArray: $allSections)
+                emptyDropArea(currentSectionArray: $sectionsShowed, otherSectionArray: $allSections)
             } else {
-                ForEach(sectionsShowed) { section in
-                    SectionView(model: section)
-                    .padding(.horizontal, 24)
-                    .onDrag {
-                        self.currentlyDragging = section
-                        self.isFromPreview = true
-                        return NSItemProvider(object: section.section.sectionType as NSString)
+                VStack(spacing: 2) {
+                    ForEach(sectionsShowed) { section in
+                        SectionView(model: section)
+                            .padding(.horizontal, 24)
+                            .onDrag {
+                                self.currentlyDragging = section
+                                self.isFromPreview = true
+                                return NSItemProvider(object: section.section.sectionType as NSString)
+                            }
+                            .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: section, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: sectionsShowed.last == section))
                     }
-                    .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: section, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: sectionsShowed.last == section))
+                    previewEmptySlot
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipShape(.rect(cornerRadius: 16))
+                .padding(.top, 90)
+                .padding(.bottom, 30)
+                .padding(.leading, 35)
+                .padding(.trailing, 45)
             }
-            Rectangle()
-                .background(.white)
-                .frame(maxHeight: .infinity)
-                .padding(.horizontal, 24)
-                .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: nil, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: true))
+            Image(string)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .allowsHitTesting(false)
         }
-        }
-        .padding(.vertical, 40)
-        .frame(maxHeight: .infinity)
-        .frame(width: 400)
-        .border(.black, width: 20)
-        .background(.white)
-        .clipShape(.rect(cornerRadius: 16))
+        .frame(width: 500, height: 955)
+    }
+    
+    var previewEmptySlot: some View {
+        Rectangle()
+            .foregroundStyle(Color("iphoneBackground"))
+            .frame(maxHeight: .infinity)
+            .padding(.horizontal, 24)
+            .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: nil, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: true))
     }
     
     var sectionsList: some View {
-        VStack(spacing: 0) {
-            if allSections.isEmpty {
-                emptyDropArea(currentItemArray: $allSections, otherItemArray: $sectionsShowed)
-            } else {
+        ZStack {
+            VStack(spacing: 2) {
                 ForEach(allSections) { section in
                     HStack {
                         Text("\(section.section.sectionType):")
@@ -108,70 +116,148 @@ struct HomeView: View {
                             return NSItemProvider(object: section.section.sectionType as NSString)
                         }
                 }
+                Spacer()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipShape(.rect(cornerRadius: 16))
+            .padding(.top, 90)
+            .padding(.bottom, 30)
+            .padding(.leading, 35)
+            .padding(.trailing, 45)
+            Image(string)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .allowsHitTesting(false)
         }
-        .padding(.vertical, 40)
-        .frame(maxHeight: .infinity)
-        .frame(width: 400)
-        .border(.black, width: 20)
-        .background(.white)
-        .clipShape(.rect(cornerRadius: 16))
-        .onDrop(of: ["public.text"], delegate: RemoveDropDelegate(sections: $sectionsShowed, draggedSection: $currentlyDragging, isFromPreview: isFromPreview ?? false))
+        .frame(width: 500, height: 955)
+    }
+    
+    var getJsonButton: some View {
+        Button(action: {
+            getJson()
+        }) {
+            VStack {
+                Image(systemName: "arrow.down.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.white)
+                    .frame(width: 50, height: 50)
+                
+                Text("Download")
+                    .foregroundColor(.white)
+                    .font(.title3)
+                    .padding(.top, 8)
+            }
+            .padding()
+            .background(Color.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .frame(width: 140, height: 140)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    func trashSpacer(_ drag: SectionModel?, _ isFromPreview: Bool?) -> some View {
+        if showTrash(drag, isFromPreview) {
+            VStack {
+                Image(systemName: "trash")
+                    .font(.system(size: 60))
+                    .foregroundStyle(Color("backgroundColor"))
+                Text("Remover")
+                    .font(.title)
+                    .foregroundStyle(Color("backgroundColor"))
+                    .padding(.top, 6)
+            }
+            .frame(width: 180, height: 180)
+            .background(.red.opacity(0.6))
+            .clipShape(.rect(cornerRadius: 16))
+            .onDrop(of: ["public.text"], delegate: RemoveDropDelegate(sections: $sectionsShowed, draggedSection: $currentlyDragging, isFromPreview: isFromPreview ?? false))
+        } else {
+            Rectangle()
+                .foregroundStyle(Color("backgroundColor"))
+                .frame(width: 180, height: 180)
+        }
     }
     
     var sectionsConfig: some View {
         VStack{
+            Spacer()
             if showingConfig {
                 configList
                     .padding(.horizontal, 24)
                     .clipShape(.rect(cornerRadius: 16))
             }
+            Spacer()
+            Spacer()
         }
         .frame(width: 400)
         .padding(24)
     }
     
     @State private var name: String = ""
+    @State private var input1: String = ""
+    @State private var input2: String = ""
+    @State private var input3: String = ""
     
     var configList: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
             Spacer()
             Text("Configurações")
+                .font(.largeTitle)
                 .bold()
-                .font(.title)
                 .foregroundStyle(.gray)
-            Text(actualSectionConfig?.section.sectionType ?? "")
-                .font(.title2)
-                .foregroundStyle(.black)
-            ForEach(types) { type in
-                MyTextField(placeholder: getPlaceholderString(type: type),
-                            value: Binding(
-                                get: { configBindings[type.name, default: ""] },
-                                set: { configBindings[type.name] = $0 }
-                            ))
+                .padding(.bottom, 10)
+            Spacer()
             }
-            Button {
+            
+            HStack {
+                Spacer()
+                Text(actualSectionConfig?.section.sectionType ?? "")
+                    .font(.title2)
+                    .foregroundStyle(Color("textColor"))
+                    .padding(.bottom, 15)
+                Spacer()
+            }
+
+            ForEach(types) { type in
+                TextField(getPlaceholderString(type: type),
+                          text: Binding(
+                              get: { configBindings[type.name, default: ""] },
+                              set: { configBindings[type.name] = $0 }
+                          ))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                    .frame(height: 50)
+            }
+            Button(action: {
                 saveConfig()
-            } label: {
+            }) {
                 Text("Salvar")
                     .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .font(.title)
-                    .background(.blue)
-                    .foregroundStyle(.white)
-                    .clipShape(.rect(cornerRadius: 8))
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            Spacer()
+            .padding(.horizontal)
         }
-        .padding(.horizontal, 16)
+        .padding(12)
+        .background(Color("lightGray"))
+        .clipShape(.rect(cornerRadius: 12))
     }
     
-    func emptyDropArea(currentItemArray: Binding<[SectionModel]>, otherItemArray: Binding<[SectionModel]>) -> some View {
+    func emptyDropArea(currentSectionArray: Binding<[SectionModel]>, otherSectionArray: Binding<[SectionModel]>) -> some View {
         Rectangle()
             .fill(Color.gray.opacity(0.2))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipShape(.rect(cornerRadius: 16))
+            .padding(.vertical, 30)
+            .padding(.leading, 35)
+            .padding(.trailing, 45)
             .overlay(Text("Drop items here").foregroundColor(.gray))
-            .onDrop(of: ["public.text"], delegate: EmptySectionDropDelegate(currentItemArray: currentItemArray, otherItemArray: otherItemArray, draggedItem: $currentlyDragging))
+            .onDrop(of: ["public.text"], delegate: EmptySectionDropDelegate(currentSectionArray: currentSectionArray, otherSectionArray: otherSectionArray, draggedSection: $currentlyDragging))
     }
     
     //MARK: - PRIVATE METHODS
@@ -180,7 +266,7 @@ struct HomeView: View {
         print(section.section.toString())
         self.configBindings = [:]
         self.types = section.section.listProperties()
-        if actualSectionConfig == section && showingConfig{
+        if actualSectionConfig == section && showingConfig {
             showingConfig = false
         } else {
             showingConfig = true
@@ -207,7 +293,7 @@ struct HomeView: View {
         if type.isOptional {
             return type.name
         } else {
-            return "\(type.name)(obrigatório)"
+            return "\(type.name) (obrigatório)"
         }
     }
     
@@ -220,8 +306,14 @@ struct HomeView: View {
                 string += ",\n"
                 string += section.section.toString()
             }
-        }        
+        }
         string += "\n]\n}"
         print(string)
+    }
+    
+    private func showTrash(_ drag: SectionModel?, _ isFromPreview: Bool?) -> Bool {
+        guard let drag = drag,
+              let isFromPreview = isFromPreview else { return false }
+        return isFromPreview
     }
 }

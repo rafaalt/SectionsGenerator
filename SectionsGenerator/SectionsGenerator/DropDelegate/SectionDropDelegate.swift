@@ -22,6 +22,7 @@ struct SectionDropDelegate: DropDelegate {
                 currentSections[sourceIndex] = duplicatedItem
             }
         }
+        self.draggedSection = nil
         return true
     }
     

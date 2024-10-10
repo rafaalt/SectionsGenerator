@@ -18,7 +18,11 @@ struct ButtonView: View {
         .frame(maxWidth: .infinity)
         .background(model.getType() == .primary ? .orange : .white)
         .clipShape(.rect(cornerRadius: 8))
-        .border(model.getType() == .primary ? .clear : .orange, width: 3)
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(lineWidth: 3)
+                .fill(model.getType() == .primary ? .clear : .orange)
+        }
         
     }
 }

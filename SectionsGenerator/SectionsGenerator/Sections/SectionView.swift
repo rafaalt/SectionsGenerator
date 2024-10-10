@@ -13,7 +13,6 @@ struct SectionView: View {
     
     var body: some View {
         getView()
-            .padding(.horizontal, 16)
     }
     
     func getView() -> some View {

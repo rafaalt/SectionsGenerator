@@ -29,18 +29,11 @@ struct HomeView: View {
     
     var body: some View {
         HStack {
-            Spacer()
-            sectionsPreview
             VStack {
-                Spacer()
                 trashSpacer(currentlyDragging, isFromPreview)
-                    .padding(.horizontal, 50)
-                Spacer()
-                getJsonButton
-                Spacer()
-                Spacer()
-                Spacer()
+                    .frame(width: 400)
             }
+            sectionsPreview
             sectionsList
             sectionsConfig
         }
@@ -52,36 +45,51 @@ struct HomeView: View {
     //MARK: - VIEWS
     
     var sectionsPreview: some View {
-        ZStack {
-            if sectionsShowed.isEmpty {
-                emptyDropArea(currentSectionArray: $sectionsShowed, otherSectionArray: $allSections)
-            } else {
-                VStack(spacing: 2) {
-                    ForEach(sectionsShowed) { section in
-                        SectionView(model: section)
-                            .padding(.horizontal, 24)
-                            .onDrag {
-                                self.currentlyDragging = section
-                                self.isFromPreview = true
-                                return NSItemProvider(object: section.section.sectionType as NSString)
-                            }
-                            .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: section, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: sectionsShowed.last == section))
-                    }
-                    previewEmptySlot
+        VStack {
+            HStack {
+                Text("Preview ")
+                    .bold()
+                    .font(.largeTitle)
+                    .padding(.trailing, 8)
+                Button(action: {
+                    getJson()
+                }) {
+                    Image(systemName: "doc.fill.badge.plus")
+                    .font(.largeTitle)
+                    .foregroundColor(.orange)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipShape(.rect(cornerRadius: 16))
-                .padding(.top, 90)
-                .padding(.bottom, 30)
-                .padding(.leading, 35)
-                .padding(.trailing, 45)
             }
-            Image(string)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .allowsHitTesting(false)
+            ZStack {
+                if sectionsShowed.isEmpty {
+                    emptyDropArea(currentSectionArray: $sectionsShowed, otherSectionArray: $allSections)
+                } else {
+                    VStack(spacing: 2) {
+                        ForEach(sectionsShowed) { section in
+                            SectionView(model: section)
+                                .padding(.horizontal, 24)
+                                .onDrag {
+                                    self.currentlyDragging = section
+                                    self.isFromPreview = true
+                                    return NSItemProvider(object: section.section.sectionType as NSString)
+                                }
+                                .onDrop(of: ["public.text"], delegate: SectionDropDelegate(section: section, currentSections: $sectionsShowed, anotherSections: $allSections, draggedSection: $currentlyDragging, isLastItem: sectionsShowed.last == section))
+                        }
+                        previewEmptySlot
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipShape(.rect(cornerRadius: 16))
+                    .padding(.top, 90)
+                    .padding(.bottom, 30)
+                    .padding(.leading, 35)
+                    .padding(.trailing, 45)
+                }
+                Image(string)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .allowsHitTesting(false)
+            }
+            .frame(width: 500, height: 955)
         }
-        .frame(width: 500, height: 955)
     }
     
     var previewEmptySlot: some View {
@@ -93,43 +101,60 @@ struct HomeView: View {
     }
     
     var sectionsList: some View {
-        ZStack {
-            VStack(spacing: 2) {
-                ForEach(allSections) { section in
-                    HStack {
-                        Text("\(section.section.sectionType):")
-                            .font(.title2)
-                            .foregroundStyle(.black)
-                        Spacer()
+        VStack {
+            Text("Lista de Sections")
+                .bold()
+                .font(.largeTitle)
+            ZStack {
+                VStack(spacing: 0) {
+                    ForEach(allSections) { section in
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text("\(section.section.sectionType):")
+                                    .font(.title2)
+                                    .foregroundStyle(.black)
+                                Spacer()
+                            }
+                            .onTapGesture {
+                                tapSection(section)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 4)
+                            SectionView(model: section)
+                                .padding(.horizontal, 24)
+                                .onTapGesture {
+                                    tapSection(section)
+                                }
+                                .onDrag {
+                                    self.currentlyDragging = section
+                                    self.isFromPreview = false
+                                    return NSItemProvider(object: section.section.sectionType as NSString)
+                                }
+                            Rectangle()
+                                .fill(.gray.opacity(0.5))
+                                .frame(height: 2)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 20)
+                        }
+                        .background(.white)
+                        .padding(.horizontal, 4)
                     }
-                    .padding(.leading, 44)
-                    .padding(.top, 16)
-                    .padding(.bottom, 4)
-                    SectionView(model: section)
-                        .padding(.horizontal, 24)
-                        .onTapGesture {
-                            tapSection(section)
-                        }
-                        .onDrag {
-                            self.currentlyDragging = section
-                            self.isFromPreview = false
-                            return NSItemProvider(object: section.section.sectionType as NSString)
-                        }
+                    Spacer()
                 }
-                Spacer()
+                .ignoresSafeArea()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipShape(.rect(cornerRadius: 16))
+                .padding(.top, 90)
+                .padding(.bottom, 30)
+                .padding(.leading, 35)
+                .padding(.trailing, 45)
+                Image(string)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .allowsHitTesting(false)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .clipShape(.rect(cornerRadius: 16))
-            .padding(.top, 90)
-            .padding(.bottom, 30)
-            .padding(.leading, 35)
-            .padding(.trailing, 45)
-            Image(string)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .allowsHitTesting(false)
+            .frame(width: 500, height: 955)
         }
-        .frame(width: 500, height: 955)
     }
     
     var getJsonButton: some View {
@@ -161,21 +186,24 @@ struct HomeView: View {
         if showTrash(drag, isFromPreview) {
             VStack {
                 Image(systemName: "trash")
-                    .font(.system(size: 60))
-                    .foregroundStyle(Color("backgroundColor"))
-                Text("Remover")
-                    .font(.title)
-                    .foregroundStyle(Color("backgroundColor"))
-                    .padding(.top, 6)
+                    .font(.system(size: 100))
+                    .foregroundStyle(.black.opacity(0.7))
+                HStack {
+                    Text("   Arraste aqui pra remover do Preview")
+                        .font(.title)
+                        .foregroundStyle(.black.opacity(0.7))
+                        .padding(.top, 6)
+                        .padding(.horizontal, 10)
+                }
             }
-            .frame(width: 180, height: 180)
-            .background(.red.opacity(0.6))
-            .clipShape(.rect(cornerRadius: 16))
+            .frame(width: 300, height: 300)
+            .background(.red.opacity(0.25))
+            .clipShape(.rect(cornerRadius: 12))
             .onDrop(of: ["public.text"], delegate: RemoveDropDelegate(sections: $sectionsShowed, draggedSection: $currentlyDragging, isFromPreview: isFromPreview ?? false))
         } else {
             Rectangle()
                 .foregroundStyle(Color("backgroundColor"))
-                .frame(width: 180, height: 180)
+                .frame(width: 300, height: 300)
         }
     }
     
@@ -193,11 +221,6 @@ struct HomeView: View {
         .frame(width: 400)
         .padding(24)
     }
-    
-    @State private var name: String = ""
-    @State private var input1: String = ""
-    @State private var input2: String = ""
-    @State private var input3: String = ""
     
     var configList: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -246,6 +269,10 @@ struct HomeView: View {
         .padding(12)
         .background(Color("lightGray"))
         .clipShape(.rect(cornerRadius: 12))
+    }
+    
+    func copyToClipboard(text: String) {
+        UIPasteboard.general.string = text
     }
     
     func emptyDropArea(currentSectionArray: Binding<[SectionModel]>, otherSectionArray: Binding<[SectionModel]>) -> some View {
@@ -308,6 +335,7 @@ struct HomeView: View {
             }
         }
         string += "\n]\n}"
+        copyToClipboard(text: string)
         print(string)
     }
     
